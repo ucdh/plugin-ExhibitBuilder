@@ -92,11 +92,14 @@
         </div>
     </section>
 </form>
+<div id="theme-panel">
 
-<script type="text/javascript" charset="utf-8">
-//<![CDATA[
-    jQuery(window).load(function() {
-        Omeka.wysiwyg();
-    });
-//]]>
+</div>
+<script type="text/javascript">
+jQuery(window).load(function() {
+    Omeka.wysiwyg();
+});
+jQuery(document).ready(function () {
+    Omeka.ExhibitBuilder.createDialog(jQuery('#theme-panel'));
+});
 </script>

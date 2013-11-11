@@ -4,6 +4,42 @@ if (typeof Omeka === 'undefined') {
 Omeka.ExhibitBuilder = {};
 
 (function ($) {
+    Omeka.ExhibitBuilder.createDialog = function (dialogPanel) {
+        dialogPanel.dialog({
+            autoOpen: false,
+            modal: true,
+            resizable: false,
+            create: function () {
+                $(this).dialog('widget').draggable('option', {
+                    containment: 'window',
+                    scroll: false
+                });
+            },
+            open: function () {
+                function refreshDialog() {
+                    dialogPanel.dialog('option', {
+                        width: Math.min($(window).width() - 100, 600),
+                        height: Math.min($(window).height() - 100, 500),
+                        position: {my: 'center', at: 'center center+22'}
+                    });
+                }
+
+                refreshDialog();
+                $('body').css('overflow', 'hidden');
+                var resizeTimeout;
+                $(window).on('resize.ExhibitBuilder', function () {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(refreshDialog, 100);
+                });
+            },
+            beforeClose: function () {
+                $('body').css('overflow', 'inherit');
+                $(window).off('resize.ExhibitBuilder');
+            },
+            dialogClass: 'exhibit-builder-dialog'
+        });
+    };
+
     Omeka.ExhibitBuilder.setUpBlocks = function(blockFormUrl) {
         function sortAttachments(ancestor) {
             $(ancestor).find('.selected-item-list').sortable({
@@ -318,37 +354,9 @@ Omeka.ExhibitBuilder = {};
 
         var attachmentPanel = $('#attachment-panel');
         // Search Items Dialog Box
-        attachmentPanel.dialog({
-            autoOpen: false,
-            modal: true,
-            resizable: false,
-            create: function () {
-                $(this).dialog('widget').draggable('option', {
-                    containment: 'window',
-                    scroll: false
-                });
-            },
-            open: function () {
-                function refreshDialog() {
-                    attachmentPanel.dialog('option', {
-                        width: Math.min($(window).width() - 100, 600),
-                        height: Math.min($(window).height() - 100, 500),
-                        position: {my: 'center', at: 'center center+22'}
-                    });
-                }
-
-                refreshDialog();
-                $('body').css('overflow', 'hidden');
-                $(window).on('resize.ExhibitBuilder', function () {
-                    refreshDialog();
-                });
-            },
-            beforeClose: function () {
-                $('body').css('overflow', 'inherit');
-                $(window).off('resize.ExhibitBuilder');
-                $('#attachment-item-options').empty();
-            },
-            dialogClass: 'item-dialog'
+        this.createDialog(attachmentPanel);
+        attachmentPanel.on('dialogclose', function () {
+            $('#attachment-item-options').empty();
         });
         
         $('#attachment-item-options').on('click','.file-select .item-file', function(event) {
