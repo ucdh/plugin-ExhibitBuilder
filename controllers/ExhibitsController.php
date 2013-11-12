@@ -195,22 +195,19 @@ class ExhibitBuilder_ExhibitsController extends Omeka_Controller_AbstractActionC
      */
     public function themeConfigAction()
     {
-        $exhibit = $this->_helper->db->findById();
-        $themeName = (string)$exhibit->theme;
+        $request = $this->getRequest();
+        $themeName = $request->getParam('theme_name');
 
-        // Abort if no specific theme is selected.
+        $theme = Theme::getTheme($themeName);
+                
         if ($themeName == '') {
-            $this->_helper->flashMessenger(__('You must specifically select a theme in order to configure it.'), 'error');
-            $this->_helper->redirector->gotoRoute(array('action' => 'edit', 'id' => $exhibit->id), 'exhibitStandard');
+            $this->_helper->flashMessenger(__('This is not a valid theme.'), 'error');
+            //$this->_helper->redirector->gotoRoute(array('action' => 'theme-config'));
             return;
         }
 
-        $theme = Theme::getTheme($themeName);
-        $previousOptions = $exhibit->getThemeOptions();
-
         $form = new Omeka_Form_ThemeConfiguration(array(
-            'themeName' => $themeName,
-            'themeOptions' => $previousOptions
+            'themeName' => $themeName
         ));
         $form->removeDecorator('Form');
 
@@ -233,22 +230,10 @@ class ExhibitBuilder_ExhibitsController extends Omeka_Controller_AbstractActionC
             }
         }
 
-        // process the form if posted
-        if ($this->getRequest()->isPost()) {
-            $configHelper = new Omeka_Controller_Action_Helper_ThemeConfiguration;
-
-            if (($newOptions = $configHelper->processForm($form, $_POST, $previousOptions))) {
-                $exhibit->setThemeOptions($newOptions);
-                $exhibit->save();
-
-                $this->_helper->_flashMessenger(__('The theme settings were successfully saved!'), 'success');
-                $this->_helper->redirector->gotoRoute(array('action' => 'edit', 'id' => $exhibit->id), 'exhibitStandard');
-            } else {
-                $this->_helper->_flashMessenger(__('There was an error on the form. Please try again.'), 'error');
-            }
-        }
-
-        $this->view->assign(compact('exhibit', 'form', 'theme'));
+        $this->view->assign(array(
+            'theme' => $theme,
+            'form' => $form
+        ));
     }
 
 

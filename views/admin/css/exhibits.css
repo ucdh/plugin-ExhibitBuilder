@@ -779,3 +779,37 @@ div.selected-items {
   to {
     transform: rotate(360deg); } 
 }
+
+#theme {
+    width: 68%;
+    float: left;
+    margin-right: 2%;
+    padding-right: 40px;
+    text-overflow: ellipsis;
+}
+
+a.configure-button {
+    width: 30%;
+    float: left;
+    margin: 0;
+    line-height: 22px;
+}
+
+#theme-form .columns{
+    width: 100%;
+    margin: 0;
+}
+
+#theme-form .field {
+    margin-bottom: 40px;
+    overflow: auto;
+}
+
+#theme-form .explanation {
+    margin-top: 0;
+    font-style: italic;
+}
+
+#theme-form label {
+    margin: 0;
+}

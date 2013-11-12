@@ -173,8 +173,41 @@ Omeka.ExhibitBuilder = {};
 
         sortAttachments('#block-container');
     };
+    
+    Omeka.ExhibitBuilder.themeConfig = function(themeConfigUrl, data) {
+        if ($('#theme').val() == '') {
+            $('.configure-button').hide();
+        }
+        
+        $('#theme').change(function() {
+            if ($(this).val() == '') {
+                $('.configure-button').hide();
+            } else {
+                $('.configure-button').show();
+            }
+        });
 
-    Omeka.ExhibitBuilder.setUpItemsSelect = function (itemOptionsUrl, attachmentUrl) {
+        this.loadConfigForm = function() {
+            $.ajax({
+                url: themeConfigUrl + $('#theme').val(),
+                data: data,
+                method: 'GET',
+                success: function(data) {
+                    $('#theme-panel').html(data);
+                    $(document).trigger("omeka:loadthemeform");
+                }
+            });
+        }
+
+        $('#exhibit-metadata-form').on('click', '.configure-button', function(e) {
+            e.preventDefault();
+            Omeka.ExhibitBuilder.loadConfigForm();
+            Omeka.ExhibitBuilder.createDialog($("#theme-panel"));
+            $('#theme-panel').dialog('open');
+        });
+    }; 
+
+    Omeka.ExhibitBuilder.setUpItemsSelect = function(itemOptionsUrl, attachmentUrl) {
         /*
          * Use AJAX to retrieve the list of items that can be attached.
          */

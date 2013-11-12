@@ -51,9 +51,7 @@
             <div class="five columns omega inputs">
                 <?php $values = array('' => __('Current Public Theme')) + exhibit_builder_get_themes(); ?>
                 <?php echo get_view()->formSelect('theme', $exhibit->theme, array(), $values); ?>
-                <?php if ($theme && $theme->hasConfig): ?>
-                    <a href="<?php echo html_escape(url("exhibits/theme-config/$exhibit->id")); ?>" class="configure-button button"><?php echo __('Configure'); ?></a>
-                <?php endif;?>
+                <a href="<?php echo html_escape(url("exhibits/theme-config/$exhibit->id")); ?>" class="configure-button button"><?php echo __('Configure'); ?></a>
             </div>
         </div>
     </fieldset>
@@ -92,7 +90,8 @@
         </div>
     </section>
 </form>
-<div id="theme-panel">
+
+<div id="theme-panel" title="<?php echo html_escape(__('Configure Theme for Exhibit "%s"', $exhibit->title)); ?>">
 
 </div>
 <script type="text/javascript">
@@ -100,6 +99,6 @@ jQuery(window).load(function() {
     Omeka.wysiwyg();
 });
 jQuery(document).ready(function () {
-    Omeka.ExhibitBuilder.createDialog(jQuery('#theme-panel'));
+    Omeka.ExhibitBuilder.themeConfig(<?php echo js_escape(url('exhibits/theme-config/')); ?>);
 });
 </script>
