@@ -1,5 +1,5 @@
 <?php
-    queue_js_file(array('vendor/jquery.nestedSortable', 'navigation'));
+    queue_js_file(array('vendor/jquery.nestedSortable', 'navigation', 'jquery.serialize-object.compiled'));
     $title = __('Edit Exhibit "%s"', $exhibit->title);
 
     echo head(array('title' => html_escape($title), 'bodyclass' => 'exhibits'));

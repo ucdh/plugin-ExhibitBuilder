@@ -66,7 +66,7 @@
     display: none;
 }
 
-#attachment-save {
+.ui-dialog #save {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -75,6 +75,10 @@
     border-top: 1px solid #D6D5C2;
     padding: 10px;
     text-align: right;
+}
+
+.ui-dialog #save button {
+    margin: 0;
 }
 
 /* Item select */
@@ -129,7 +133,7 @@
     overflow: hidden;
 }
 
-#item-list, #page-search-form, #attachment-options .options {
+#item-list, #page-search-form, .ui-dialog .options {
     position: absolute;
     top: 50px;
     bottom: 0;
@@ -140,7 +144,7 @@
     -webkit-overflow-scrolling: touch;
 }
 
-#attachment-options .options {
+.ui-dialog .options {
     top: 38px;
     bottom: 46px;
     padding: 10px 10px 0 10px;
@@ -409,6 +413,7 @@
     font-size: 1.5em;
     text-align: center; 
     position: relative;
+    clear: both;
 }
 
 .add-block a {
@@ -710,6 +715,10 @@ div.selected-items {
     border: 0;
 }
 
+.exhibits .ui-widget-content a.button {
+    color: #fff;
+}
+
 .exhibits .ui-widget-header {
     background-image: -moz-linear-gradient(top, #F5F3EC, #E9E5DA);
     background-image: -webkit-linear-gradient(top, #F5F3EC, #E9E5DA);
@@ -795,19 +804,31 @@ a.configure-button {
     line-height: 22px;
 }
 
-#theme-form .columns{
+#theme-panel {
+    display: none;
+}
+
+#theme-panel .options {
+    top: 0;
+}
+
+#theme-form h2:first-of-type {
+    margin-top: 0;
+}
+
+#theme-form .columns {
     width: 100%;
     margin: 0;
 }
 
 #theme-form .field {
     margin-bottom: 40px;
-    overflow: auto;
+    float: left;
+    width: 100%;
 }
 
 #theme-form .explanation {
     margin-top: 0;
-    font-style: italic;
 }
 
 #theme-form label {

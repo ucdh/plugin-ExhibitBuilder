@@ -103,7 +103,7 @@ echo head(array('title'=> $title, 'bodyclass'=>'exhibits'));
                 </div>
             </div>
         </div>
-        <div id="attachment-save">
+        <div id="save">
             <button type="submit" id="apply-attachment"><?php echo __('Apply'); ?></button>
         </div>
     </div>

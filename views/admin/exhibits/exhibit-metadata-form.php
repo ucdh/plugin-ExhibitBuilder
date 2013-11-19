@@ -52,6 +52,8 @@
                 <?php $values = array('' => __('Current Public Theme')) + exhibit_builder_get_themes(); ?>
                 <?php echo get_view()->formSelect('theme', $exhibit->theme, array(), $values); ?>
                 <a href="<?php echo html_escape(url("exhibits/theme-config/$exhibit->id")); ?>" class="configure-button button"><?php echo __('Configure'); ?></a>
+                <?php echo $this->formHidden('theme_options'); ?>
+                <?php echo $this->formHidden('current_options', json_encode(unserialize($exhibit->theme_options))); ?>
             </div>
         </div>
     </fieldset>
@@ -92,7 +94,11 @@
 </form>
 
 <div id="theme-panel" title="<?php echo html_escape(__('Configure Theme for Exhibit "%s"', $exhibit->title)); ?>">
-
+    <div class="options">
+    </div>
+    <div id="save">
+        <button type="submit" id="apply-theme-config"><?php echo __('Apply'); ?></button>
+    </div>
 </div>
 <script type="text/javascript">
 jQuery(window).load(function() {

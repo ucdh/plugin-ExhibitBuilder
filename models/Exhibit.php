@@ -363,4 +363,14 @@ class Exhibit extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_I
     {
         return 'ExhibitBuilder_Exhibits';
     }
+    
+    public function filterPostData($post)
+    {
+        if (!empty($post['theme']) && !empty($post['theme_options'])) {
+            $options = json_decode($post['theme_options'], true);
+            $this->setThemeOptions($options, $post['theme']);
+        }
+        unset($post['theme_options']);
+        return $post;
+    }
 }

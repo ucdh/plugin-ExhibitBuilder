@@ -174,7 +174,7 @@ Omeka.ExhibitBuilder = {};
         sortAttachments('#block-container');
     };
     
-    Omeka.ExhibitBuilder.themeConfig = function(themeConfigUrl, data) {
+    Omeka.ExhibitBuilder.themeConfig = function(themeConfigUrl) {
         if ($('#theme').val() == '') {
             $('.configure-button').hide();
         }
@@ -185,19 +185,46 @@ Omeka.ExhibitBuilder = {};
             } else {
                 $('.configure-button').show();
             }
+            $("#theme_options").val('');
+        });
+        
+        $('[type=checkbox]').change(function() {
+            if($(this).checked) {
+                $(this).val("1");
+            } e
         });
 
-        this.loadConfigForm = function() {
+        this.loadConfigForm = function(data) {
             $.ajax({
                 url: themeConfigUrl + $('#theme').val(),
                 data: data,
                 method: 'GET',
                 success: function(data) {
-                    $('#theme-panel').html(data);
+                    $('#theme-panel .options').html(data);
                     $(document).trigger("omeka:loadthemeform");
                 }
             });
         }
+        
+        $(document).on("omeka:loadthemeform", function() {
+            var parsedData = JSON.parse($('#current_options').val());
+            var selectedTheme = $('#theme').val();
+            if (parsedData[selectedTheme]) {
+                $.each(parsedData[selectedTheme], function(key, value) {
+                    $('[name="'+key+'"]').val(value);
+                })
+            }
+        });
+        
+        $('#theme-panel').on('click', '#apply-theme-config', function() {
+            var parsedData = JSON.parse($('#current_options').val());
+            var selectedTheme = $('#theme').val();
+            var themeOptions = $('form#theme-form').serializeObject();
+            $('#theme_options').val(JSON.stringify(themeOptions));
+            parsedData[selectedTheme] = themeOptions;
+            $('#current_options').val(JSON.stringify(parsedData));
+            $('#theme-panel').dialog('close');
+        });
 
         $('#exhibit-metadata-form').on('click', '.configure-button', function(e) {
             e.preventDefault();
