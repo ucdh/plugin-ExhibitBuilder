@@ -646,3 +646,29 @@ function exhibit_builder_api_extend_items($extend, $args)
     }
     return $extend;
 }
+
+function exhibit_builder_front_page_blocks($blocks)
+{
+    $blocks['ExhibitBuilderFeaturedExhibit'] = 
+            array('name' => 'ExhibitBuilderFeaturedExhibit',
+                  'heading' => __('Featured Exhibit'),
+                  'callback' => 'exhibit_builder_front_display_random_featured_exhibit'
+                 );
+    
+    return $blocks;
+}
+
+
+function exhibit_builder_front_display_random_featured_exhibit($block, $view)
+{
+    $featuredExhibit = exhibit_builder_random_featured_exhibit();
+    $html = '';
+    if ($featuredExhibit) {
+       $html .= '<h3>' . exhibit_builder_link_to_exhibit($featuredExhibit) . '</h3>'."\n";
+       $html .= '<p>'.snippet_by_word_count(metadata($featuredExhibit, 'description', array('no_escape' => true))).'</p>';
+    } else {
+       $html .= '<p>' . __('You have no featured exhibits.') . '</p>';
+    }
+    $html = apply_filters('exhibit_builder_display_random_featured_exhibit', $html);
+    return $html;    
+}
