@@ -148,7 +148,7 @@ function exhibit_builder_display_random_featured_exhibit()
 {
     $html = '<div id="featured-exhibit">';
     $featuredExhibit = exhibit_builder_random_featured_exhibit();
-    $html .= '<h2>' . __('Featured Exhibit') . '</h2>';
+    $html .= '<h2>' . __('Featured Story') . '</h2>';
     if ($featuredExhibit) {
         $html .= get_view()->partial('exhibits/single.php', array('exhibit' => $featuredExhibit));
     } else {
